@@ -34,8 +34,6 @@
     "frontend/demo/*"
   ],
   "dependencies": {
-    "VPAIDFLASHClient": "^1.0.1",
-    "VPAIDHTML5Client": "^0.1.12"
   },
   "devDependencies": {
     "videojs_5": "video.js#5",
