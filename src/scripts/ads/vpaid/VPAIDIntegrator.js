@@ -67,6 +67,11 @@ VPAIDIntegrator.prototype.playAd = function playVPaidAd(vastResponse, callback) 
     player.off('vast.adsCancel', triggerVpaidAdEnd);
     removeAdUnit();
   });
+  player.on('vpaid.AdError', function() {
+    player.off('vast.adsCancel', triggerVpaidAdEnd);
+    removeAdUnit();
+    callback(new VASTError("VPAID error"));
+  });
 
   if (tech) {
     logger.info ("<VPAIDIntegrator.playAd> found tech: ", tech);
