@@ -158,8 +158,12 @@ VPAIDAdUnitWrapper.prototype.resizeAd = function (width, height, viewMode, cb) {
   this.adUnitAsyncCall('resizeAd', width, height, viewMode, cb);
 };
 
-VPAIDAdUnitWrapper.prototype.startAd = function (cb) {
-  this.waitForEvent('AdStarted', cb);
+VPAIDAdUnitWrapper.prototype.startAd = function (_waitForStart, cb) {
+  if (_waitForStart) {
+    this.waitForEvent('AdStarted', cb);
+  } else {
+    cb();
+  }
   this._adUnit.startAd();
 };
 
