@@ -15,6 +15,8 @@ var utilities = require('../../utils/utilityFunctions');
 
 var logger = require ('../../utils/consoleLogger');
 
+var _waitForStart = true;
+
 function VPAIDIntegrator(player, settings) {
   if (!(this instanceof VPAIDIntegrator)) {
     return new VPAIDIntegrator(player);
@@ -198,8 +200,8 @@ VPAIDIntegrator.prototype._playAdUnit = function (adUnit, vastResponse, callback
       next(null, adUnit, vastResponse);
     },
     this._handshake.bind(this),
-    this._initAd.bind(this),
     this._setupEvents.bind(this),
+    this._initAd.bind(this),
     this._addSkipButton.bind(this),
     this._linkPlayerControls.bind(this),
     this._startAd.bind(this)
@@ -259,6 +261,7 @@ VPAIDIntegrator.prototype._setupEvents = function (adUnit, vastResponse, next) {
   });
 
   adUnit.on('AdStarted', function () {
+    _waitForStart = false;
     player.trigger('vpaid.AdStarted');
     tracker.trackCreativeView();
     notifyPlayToPlayer();
@@ -522,7 +525,7 @@ VPAIDIntegrator.prototype._linkPlayerControls = function (adUnit, vastResponse, 
 VPAIDIntegrator.prototype._startAd = function (adUnit, vastResponse, next) {
   var player = this.player;
 
-  adUnit.startAd(function (error) {
+  adUnit.startAd(_waitForStart, function (error) {
     if (!error) {
       player.trigger('vast.adStart');
     }
